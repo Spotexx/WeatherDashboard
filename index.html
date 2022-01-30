@@ -34,10 +34,23 @@
       <div id='saved-cities'>
       </div>
     </section>
-    <section class='w-100'>
-      test
+    <section class='w-100 d-flex flex-column'>
+      <div class="jumbotron jumbotron-fluid h-auto border m-2">
+        <div class="container">
+          <h1 class="display-4" id="current-city-date-icon">Loading information...</h1>
+          <p class="lead" >Temp: <span class="d-inline" id="current-temp"></span></p>
+          <p class="lead" >Wind: <span class="d-inline" id="current-wind"></span></p>
+          <p class="lead" >Humidity: <span class="d-inline" id="current-humidity"></span></p>
+          <p class="lead" >UV Index: <span class="d-inline" id="current-uv"></span></p>
+          <p class="lead">Icon: <img id="current-icon"></p>
+        </div>
+      </div>
+      <div class='h-50'>
+        test
+      </div>
     </section>
   </main>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js" integrity="sha512-qTXRIMyZIFb8iQcfjXWCO8+M5Tbc38Qi5WzdPOYZHIlZpzBHG3L3by84BBBOiRGiEb7KKtAOAs5qYdUiZiQNNQ==" crossorigin="anonymous" referrerpolicy="no-referrer"></script>
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
   <script src="./assets/index.js"></script>
 </body>
