@@ -19,10 +19,9 @@ let displayCurrentWeather = (data, cityName) => {
     $('#current-city-date-icon').text(cityName.charAt(0).toUpperCase() + cityName.slice(1) + ', ' + moment().format("(MMM/Do/YYYY)"));
     //sets attribut 'src' to icon url
     $('#current-icon').attr('src', 'http://openweathermap.org/img/wn/' + data.current.weather[0].icon + '@2x.png');
-    $('#current-temp').text(Math.round(data.current.temp) + '°F');
+    $('#current-temp').text(Math.round(data.current.temp) + '°C');
     $('#current-humidity').text(data.current.humidity + '%');
-    $('#current-wind').text(data.current.wind_speed + ' mph');
-    console.log(data)
+    $('#current-wind').text(data.current.wind_speed + ' KPH');
     //uv with color coding
     $('#current-uv').text(data.current.uvi);
     if (data.current.uvi <= 2) {
@@ -42,7 +41,29 @@ let displayCurrentWeather = (data, cityName) => {
         $('#current-uv').css('border-radius', '25%');
         $('#current-uv').css('padding', '5px');
     }
+}
 
+let displayForecast = (data, cityName, countryId) => {
+    $('#forecast-container').empty();
+    //DATE
+    //ICON
+    //TEMP
+    //WIND
+    //HUMIDITY
+    for (day in data.daily) {
+        if (day < 5) {
+            $('#forecast-container').append(`<div class="card col-sm-2 m-2">` +
+                `<h5 class="card-header">${moment().add(data.daily[day].dt, 'hours').format("dddd")}</h5>` +
+                `<img class="card-img-top" src="http://openweathermap.org/img/wn/${data.daily[day].weather[0].icon}@2x.png");` +
+                `<div class="card-body">` +
+                `<p class="card-text">${Math.round(data.daily[day].temp.day)}°C</p>` +
+                `<p class="card-text">${data.daily[day].wind_speed} KPH</p>` +
+                `<p class="card-text">${data.daily[day].humidity}%</p>` +
+                `</div>` +
+                `</div>`
+            );
+        }
+    };
 }
 
 //$('#city').val()
@@ -54,8 +75,6 @@ let getInfo = (cityName, countryId) => {
                 response.json().then((data) => {
                     lat = data.city.coord.lat;
                     lon = data.city.coord.lon;
-                    localStorage.setItem("savedCities", JSON.stringify(savedCities));
-
                     fetch(`https://api.openweathermap.org/data/2.5/onecall?lat=` + lat + `&lon=` + lon + `&units=metric&appid=0c8597f899f97d65766478ecb9ae2427`)
                         .then(response => response.json())
                         .then(data => {
@@ -63,10 +82,11 @@ let getInfo = (cityName, countryId) => {
                             //adds city button to id saved-cities
                             if (!savedCities[cityName]) {
                                 savedCities[cityName] = countryId;
-                                $('#saved-cities').append(`<button class="btn btn-secondary w-100 mt-1 city-button" id="` + cityName+","+savedCities[cityName] + `">` + cityName.charAt(0).toUpperCase() + cityName.slice(1) + `</button>`);
+                                localStorage.setItem("savedCities", JSON.stringify(savedCities));
+                                $('#saved-cities').append(`<button class="btn btn-secondary w-100 mt-1 city-button" id="` + cityName + "," + savedCities[cityName] + `">` + cityName.charAt(0).toUpperCase() + cityName.slice(1) + `</button>`);
                             }
                             displayCurrentWeather(searchResultsWeather, cityName, countryId);
-                            //displayForecast(searchResultsWeather, cityName, countryId);
+                            displayForecast(searchResultsWeather, cityName, countryId);
 
                         });
                 })
