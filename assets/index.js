@@ -56,9 +56,9 @@ let displayForecast = (data, cityName, countryId) => {
                 `<h5 class="card-header">${moment().add(data.daily[day].dt, 'hours').format("dddd")}</h5>` +
                 `<img class="card-img-top" src="http://openweathermap.org/img/wn/${data.daily[day].weather[0].icon}@2x.png");` +
                 `<div class="card-body">` +
-                `<p class="card-text">${Math.round(data.daily[day].temp.day)}°C</p>` +
-                `<p class="card-text">${data.daily[day].wind_speed} KPH</p>` +
-                `<p class="card-text">${data.daily[day].humidity}%</p>` +
+                `<p class="card-text">Temp: ${Math.round(data.daily[day].temp.day)}°C</p>` +
+                `<p class="card-text">Wind: ${data.daily[day].wind_speed} KPH</p>` +
+                `<p class="card-text">Humidity: ${data.daily[day].humidity}%</p>` +
                 `</div>` +
                 `</div>`
             );
@@ -79,7 +79,7 @@ let getInfo = (cityName, countryId) => {
                         .then(response => response.json())
                         .then(data => {
                             searchResultsWeather = data;
-                            //adds city button to id saved-cities
+                            //adds city button to id saved-cities and creates button
                             if (!savedCities[cityName]) {
                                 savedCities[cityName] = countryId;
                                 localStorage.setItem("savedCities", JSON.stringify(savedCities));
@@ -103,7 +103,7 @@ $('form').submit(function (e) {
     getInfo($('#city').val(), $('option:selected').attr('id'));
 });
 
-//applies to every button that is a child of id saved-cities
+//applies to every button that is a child of id saved-cities container
 $('#saved-cities').on('click', '.city-button', function () {
     getInfo(this.id.substring(0, this.id.indexOf(",")), this.id.substring(this.id.indexOf(",") + 1));
 });
